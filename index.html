@@ -4,7 +4,17 @@
         <title>Rock, Paper, Scissors</title>
         <meta charset="UTF-8">
     </head>
-    <body>
+    <body style="padding-top: 170px;">
+        <div class="container" style="position: fixed; top: 0px; height: 170px; background-color: white; width: 100%;">
+            <h2>Time to play some rock, paper, scissors! First to 5 wins, wins the match!</h2>
+            <h1>Select Rock, Paper, or Scissors</h1>
+            <button id="rock">Rock</button>
+            <button id="paper">Paper</button>
+            <button id="scissors">Scissors</button>
+        </div>
+        <div id="results">
+
+        </div>
         <script>
             function computerPlay() {
                 let randomSelectionNumber = Math.floor( Math.random() * 3 + 1 );
@@ -28,54 +38,113 @@
             }
             function playRound(playerSelection, computerSelection) {
                 if(playerSelection == computerSelection){
-                    return `Both opponents played ${playerSelection}. Game ends in a draw. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Both opponents played ${playerSelection}. Game ends in a draw. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 } else if (playerSelection == "rock" && computerSelection == "paper") { 
                     scoreBoard('computer');
-                    return `Computer wins because ${computerSelection} covers ${playerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Computer wins because ${computerSelection} covers ${playerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 } else if (playerSelection == "rock" && computerSelection == "scissors") { 
                     scoreBoard('player');
-                    return `Player wins because ${playerSelection} breaks ${computerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Player wins because ${playerSelection} breaks ${computerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 } else if (playerSelection == "paper" && computerSelection == "scissors") { 
                     scoreBoard('computer');
-                    return `Computer wins because ${computerSelection} cuts ${playerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Computer wins because ${computerSelection} cuts ${playerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 } else if (playerSelection == "paper" && computerSelection == "rock") { 
                     scoreBoard('player');
-                    return `Player wins because ${playerSelection} covers ${computerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Player wins because ${playerSelection} covers ${computerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 } else if (playerSelection == "scissors" && computerSelection == "rock") { 
                     scoreBoard('computer');
-                    return `Computer wins because ${computerSelection} breaks ${playerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Computer wins because ${computerSelection} breaks ${playerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 } else if (playerSelection == "scissors" && computerSelection == "paper") { 
                     scoreBoard('player');
-                    return `Player wins because ${playerSelection} cuts ${computerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`; 
+                    const theGameResult = document.createElement('div');
+                    const resultInfo = document.createElement('p');
+                    resultInfo.textContent = `Player wins because ${playerSelection} cuts ${computerSelection}. Current Score is Player ${score['player']}, Computer ${score['computer']}.`;
+                    theGameResult.appendChild(resultInfo);
+                    return theGameResult;
                 }
             }
             function scoreBoard(winner){
                 score[winner] += 1;
             }
-            function whoWon(player, computer) {
-                if(player > computer) {
-                    return `Congrats you won the game ${player} to ${computer}!`;
-                } else if (computer > player) {
-                    return `Sorry you lost the game ${player} to ${computer}. Better luck next time!`;
-                } else {
-                    return `Lame.... the game ended in a draw :/ `;
-                }
-            }
-            function game() {
-                for(let i = 0; i < 5; i++){
-                    let playerSelection = prompt('Rock, paper or scissors?');
+
+            let game = 0;
+
+            const buttons = document.querySelectorAll('button');
+
+            // we use the .forEach method to iterate through each button
+            buttons.forEach((button) => {
+
+                // and for each one we add a 'click' listener
+                button.addEventListener('click', (e) => {
+                    let playerSelection = button.id;
                     let computerSelection = computerPlay();
-                    console.log(playerSelection);
                     if (playerSelection.toLowerCase() == "rock" || playerSelection.toLowerCase() == "paper" || playerSelection.toLowerCase() == "scissors"){
-                        console.log(playRound(playerSelection, computerSelection));
+                        const htmlContainer = document.querySelector('#results');
+                        const mainContainer = document.createElement('div');
+                        const gameCount = document.createElement('h3');
+                        game++;
+                        gameCount.textContent = `Game Number ${game}`;
+                        mainContainer.appendChild(gameCount);
+                        mainContainer.appendChild(playRound(playerSelection, computerSelection));
+                        htmlContainer.appendChild(mainContainer);
                     } else {
-                        alert("You must enter rock, paper or scissors.");
+                        const mainContainer = document.createElement('div');
+                        const alert = document.createElement('p');
+                        alert.textContent = 'You must enter rock, paper, scissors';
+                        mainContainer.appendChild(alert);
                     }
-                    
-                }
-                console.log(whoWon(score['player'], score['computer']));
-            }
-            game();
+
+                    if(score['player'] === 5 || score['computer'] === 5) {
+                        if(score['player'] === 5){
+                            const htmlContainer = document.querySelector('#results');
+                            const finalResult = document.createElement('div');
+                            const resultInfo = document.createElement('h2');
+                            resultInfo.textContent = `Congrats you won the game ${score['player']} to ${score['computer']}!`;
+                            finalResult.appendChild(resultInfo);
+                            htmlContainer.appendChild(finalResult);
+                            game = 0;
+                            score['player'] = 0;
+                            score['computer'] = 0;
+                        } else if (score['computer'] === 5) {
+                            const htmlContainer = document.querySelector('#results');
+                            const finalResult = document.createElement('div');
+                            const resultInfo = document.createElement('h2');
+                            resultInfo.textContent = `Sorry you lost the game ${score['player']} to ${score['computer']}. Better luck next time!`;
+                            finalResult.appendChild(resultInfo);
+                            htmlContainer.appendChild(finalResult);
+                            game = 0;
+                            score['player'] = 0;
+                            score['computer'] = 0;
+                        }
+                    }
+                    window.scrollTo(0,document.body.scrollHeight);
+                });
+            });
+            
         </script>
     </body>
 </html>
